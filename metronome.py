@@ -1,31 +1,34 @@
 import tkinter as tk
-from playsound import playsound
 import time
+import pygame
 
 root = tk.Tk()
 canvas = tk.Canvas(root, height=700, width=700)
 canvas.pack()
 
-frame = tk.Frame(root, bg='white')
+frame = tk.Frame(root)
 frame.place(relwidth=1, relheight=1)
 
+playing = 1
+
 def playmetronome():
+    pygame.mixer.init()
     newLabel = tk.Label(frame, text=speed.get())
     newLabel.pack()
     newLabel2 = tk.Label(frame, text=time.ctime())
     newLabel2.pack()
-    total_seconds = int(speed.get())
-    while total_seconds > 0:
-        print(total_seconds)
-        time.sleep(1)
-        total_seconds -= 1
+    bpm =  (60 / int(speed.get())) - 0.002
+    print(bpm)
+    while playing > 0:
+        pygame.mixer.Sound('./sounds/Tic.mp3').play()
+        time.sleep(bpm)
     print('done')
 
 
-play = tk.Button(frame, text='play', bg='green', command=playmetronome)
+play = tk.Button(frame, text='play', command=playmetronome)
 play.pack()
 
-speed = tk.Entry(frame, bg='red')
+speed = tk.Entry(frame)
 speed.pack()
 
 root.mainloop()
